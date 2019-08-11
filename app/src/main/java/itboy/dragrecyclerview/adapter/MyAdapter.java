@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import itboy.dragrecyclerview.R;
 import itboy.dragrecyclerview.bean.A_Item;
 import itboy.dragrecyclerview.bean.B_Item;
 import itboy.dragrecyclerview.bean.Base_Item;
+import itboy.dragrecyclerview.inter.OnItemClickListener;
 
 public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -25,8 +27,31 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ItemTouchHelper itemTouchHelper;
     private Base_Item currentDrageItem = null;
 
+    /**
+     * 正常颜色
+     */
     private static int color_normal;
+
+    /**
+     * 正在拖动item的颜色
+     */
     private static int color_Drag;
+
+    /**
+     * 拖动状态下，非选中item的颜色
+     */
+    private static int color_Draging;
+
+    /**
+     * 当前是否正在拖动，如果拖动，改变没有被拖动的item的背景颜色
+     */
+    private boolean draging = false;
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
         this.itemTouchHelper = itemTouchHelper;
@@ -37,6 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.context = context;
         color_normal = Color.parseColor("#10000000");
         color_Drag = Color.parseColor("#50000000");
+        color_Draging = Color.parseColor("#20000000");
 
     }
 
@@ -110,6 +136,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             final A_Item finalA_item = a_item;
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("yqy", "onClick");
+
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClickListener(position, base_item);
+                    }
+                }
+            });
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -125,8 +161,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     finalA_item.setDrag(true);
                     holder.itemView.setBackgroundColor(color_Drag);
 
+                    draging = true;
+                    notifyDataSetChanged();
+
                     if (itemTouchHelper != null) {
-                        itemTouchHelper.startDrag(holder);
+                        //itemTouchHelper.startDrag(holder);
                     }
                     return false;
                 }
@@ -135,7 +174,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (a_item.isDrag()) {
                 holder.itemView.setBackgroundColor(color_Drag);
             } else {
-                holder.itemView.setBackgroundColor(color_normal);
+                if (draging) {
+                    holder.itemView.setBackgroundColor(color_Draging);
+                } else {
+                    holder.itemView.setBackgroundColor(color_normal);
+                }
             }
         }
     }
@@ -164,6 +207,17 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
             final B_Item finalB_item = b_item;
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("yqy", "onClick");
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClickListener(position, base_item);
+                    }
+                }
+            });
+
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -178,8 +232,11 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     finalB_item.setDrag(true);
                     holder.itemView.setBackgroundColor(color_Drag);
 
+                    draging = true;
+                    notifyDataSetChanged();
+
                     if (itemTouchHelper != null) {
-                        itemTouchHelper.startDrag(holder);
+                        //itemTouchHelper.startDrag(holder);
                     }
                     return false;
                 }
@@ -188,13 +245,18 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (b_item.isDrag()) {
                 holder.itemView.setBackgroundColor(color_Drag);
             } else {
-                holder.itemView.setBackgroundColor(color_normal);
+                if (draging) {
+                    holder.itemView.setBackgroundColor(color_Draging);
+                } else {
+                    holder.itemView.setBackgroundColor(color_normal);
+                }
             }
         }
     }
 
     public void cleanDrag() {
         boolean isClean = false;
+        draging = false;
         if (currentDrageItem != null && currentDrageItem.isDrag()) {
             currentDrageItem.setDrag(false);
             isClean = true;
