@@ -74,24 +74,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        Log.e("yqy", "SCROLL_STATE_IDLE");
-                        //myAdapter.cleanDrag();
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        Log.e("yqy", "SCROLL_STATE_DRAGGING");
-                        break;
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        Log.e("yqy", "SCROLL_STATE_SETTLING");
-                        break;
-                }
-            }
-        });
 
         initTouchListener();
 

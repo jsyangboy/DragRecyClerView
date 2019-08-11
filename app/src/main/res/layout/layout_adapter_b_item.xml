@@ -6,10 +6,10 @@
 
     <FrameLayout
         android:id="@+id/layout_content"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/tv_title"
@@ -20,12 +20,20 @@
             android:textColor="#000000"
             android:textSize="18sp"/>
 
+
+        <com.icoolme.android.weatherview.view.WeatherView
+            android:id="@+id/weatherView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            />
+
     </FrameLayout>
 
     <View
         android:id="@+id/fron_bg"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#60000000"/>
+        android:background="#60000000"
+        android:visibility="gone"/>
 </FrameLayout>

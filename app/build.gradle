@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "itboy.dragrecyclerview"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -16,6 +16,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+}
+
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+    mavenCentral()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
+    jcenter()
+    google()
 }
 
 dependencies {
@@ -29,5 +44,7 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:28.+'
 
     implementation 'com.zhy:base-rvadapter:3.0.3'
+    implementation(name: 'Weather_View_SDK', ext: 'aar')
 
+    implementation "com.android.support:cardview-v7:28.0.0"
 }

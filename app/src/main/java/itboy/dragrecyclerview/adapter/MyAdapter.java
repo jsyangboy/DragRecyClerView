@@ -2,6 +2,7 @@ package itboy.dragrecyclerview.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -20,13 +21,15 @@ import itboy.dragrecyclerview.bean.A_Item;
 import itboy.dragrecyclerview.bean.B_Item;
 import itboy.dragrecyclerview.bean.Base_Item;
 import itboy.dragrecyclerview.inter.OnItemClickListener;
+import itboy.dragrecyclerview.utils.WeakHandler;
 
-public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements WeakHandler.IHandler{
 
     private Context context;
     private List<Base_Item> showData;
     private ItemTouchHelper itemTouchHelper;
     private Base_Item currentDrageItem = null;
+    private WeakHandler weakHandler = new WeakHandler(this);
 
     /**
      * 正常颜色
@@ -167,7 +170,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                          */
                         draging = true;
                         notifyDataSetChanged();
-                        //itemTouchHelper.startDrag(holder);
+                        weakHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                itemTouchHelper.startDrag(holder);
+                            }
+                        },50);
                     }
                     return false;
                 }
@@ -243,6 +251,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                          */
                         draging = true;
                         notifyDataSetChanged();
+                        weakHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                itemTouchHelper.startDrag(holder);
+                            }
+                        },50);
                         //itemTouchHelper.startDrag(holder);
                     }
                     return false;
@@ -281,6 +295,21 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
         notifyDataSetChanged();
+    }
+
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
+
+    @Override
+    public void handleMsg(Message msg) {
+        if (itemTouchHelper != null) {
+            RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) msg.obj;
+            itemTouchHelper.startDrag(holder);
+        }
     }
 
 
