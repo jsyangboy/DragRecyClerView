@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         Collections.swap(base_items, i, i - 1);
                     }
                 }
-                multiItemTypeAdapter.notifyItemMoved(fromPosition,toPosition);
+                multiItemTypeAdapter.notifyItemMoved(fromPosition, toPosition);
 
                 Log.e("yqy", "onMove");
                 return true;
