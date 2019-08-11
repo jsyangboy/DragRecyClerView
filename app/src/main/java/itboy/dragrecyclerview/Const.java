@@ -16,7 +16,7 @@ public class Const {
      */
     public static List<Base_Item> getAItem() {
         List<Base_Item> showAItem = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             showAItem.add(new A_Item("A_Item" + i, "A_Item_" + i));
         }
         return showAItem;
@@ -28,7 +28,7 @@ public class Const {
      */
     public static List<Base_Item> getBItem() {
         List<Base_Item> showAItem = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 20; i++) {
             showAItem.add(new B_Item("B_Item" + i, "B_Item_" + i));
         }
         return showAItem;

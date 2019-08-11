@@ -1,5 +1,7 @@
 package itboy.dragrecyclerview;
 
+import android.app.Service;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,6 +74,24 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        Log.e("yqy", "SCROLL_STATE_IDLE");
+                        //myAdapter.cleanDrag();
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        Log.e("yqy", "SCROLL_STATE_DRAGGING");
+                        break;
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        Log.e("yqy", "SCROLL_STATE_SETTLING");
+                        break;
+                }
+            }
+        });
 
         initTouchListener();
 
@@ -130,10 +150,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
                 super.onSelectedChanged(viewHolder, actionState);
-                /*if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                    viewHolder.itemView.setAlpha(0.5f);
-                    viewHolder.itemView.setBackgroundColor(0);
-                }*/
                 switch (actionState) {
                     case ItemTouchHelper.ACTION_STATE_IDLE:
                         Log.e("yqy", "ACTION_STATE_IDLE");
@@ -146,6 +162,9 @@ public class MainActivity extends AppCompatActivity {
                     case ItemTouchHelper.ACTION_STATE_DRAG:
                         Log.e("yqy", "ACTION_STATE_DRAG");
                         //拖动状态
+                        //获取系统震动服务
+                        Vibrator vib = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);//震动70毫秒
+                        vib.vibrate(170);
                         break;
                 }
             }

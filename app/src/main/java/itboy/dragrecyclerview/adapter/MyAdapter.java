@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -156,15 +157,16 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (currentDrageItem != null && currentDrageItem.isDrag()) {
                         currentDrageItem.setDrag(false);
                     }
-                    currentDrageItem = base_item;
-
                     finalA_item.setDrag(true);
-                    holder.itemView.setBackgroundColor(color_Drag);
-
-                    draging = true;
-                    notifyDataSetChanged();
+                    currentDrageItem = base_item;
+                    holder.fron_bg.setVisibility(View.GONE);
 
                     if (itemTouchHelper != null) {
+                        /**
+                         * 设置当前是否正在拖拽，并刷新页面，修改其他item的颜色
+                         */
+                        draging = true;
+                        notifyDataSetChanged();
                         //itemTouchHelper.startDrag(holder);
                     }
                     return false;
@@ -172,12 +174,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             if (a_item.isDrag()) {
-                holder.itemView.setBackgroundColor(color_Drag);
+                holder.fron_bg.setVisibility(View.GONE);
             } else {
                 if (draging) {
-                    holder.itemView.setBackgroundColor(color_Draging);
+                    holder.fron_bg.setVisibility(View.VISIBLE);
                 } else {
-                    holder.itemView.setBackgroundColor(color_normal);
+                    holder.fron_bg.setVisibility(View.GONE);
                 }
             }
         }
@@ -229,13 +231,18 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     }
                     currentDrageItem = base_item;
 
+                    /**
+                     * 设置状态，并修改拖拽颜色
+                     */
                     finalB_item.setDrag(true);
-                    holder.itemView.setBackgroundColor(color_Drag);
-
-                    draging = true;
-                    notifyDataSetChanged();
+                    holder.fron_bg.setVisibility(View.GONE);
 
                     if (itemTouchHelper != null) {
+                        /**
+                         * 设置当前是否正在拖拽，并刷新页面，修改其他item的颜色
+                         */
+                        draging = true;
+                        notifyDataSetChanged();
                         //itemTouchHelper.startDrag(holder);
                     }
                     return false;
@@ -243,12 +250,12 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             if (b_item.isDrag()) {
-                holder.itemView.setBackgroundColor(color_Drag);
+                holder.fron_bg.setVisibility(View.GONE);
             } else {
                 if (draging) {
-                    holder.itemView.setBackgroundColor(color_Draging);
+                    holder.fron_bg.setVisibility(View.VISIBLE);
                 } else {
-                    holder.itemView.setBackgroundColor(color_normal);
+                    holder.fron_bg.setVisibility(View.GONE);
                 }
             }
         }
@@ -282,10 +289,14 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     class A_ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
+        View fron_bg;
+        FrameLayout layout_content;
 
         public A_ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
+            fron_bg = itemView.findViewById(R.id.fron_bg);
+            layout_content = itemView.findViewById(R.id.layout_content);
         }
     }
 
@@ -296,10 +307,14 @@ public class MyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     class B_ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title;
+        View fron_bg;
+        FrameLayout layout_content;
 
         public B_ViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_title);
+            fron_bg = itemView.findViewById(R.id.fron_bg);
+            layout_content = itemView.findViewById(R.id.layout_content);
         }
     }
 }
